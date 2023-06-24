@@ -15,6 +15,7 @@ const HomeStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
+      headerStyle: {backgroundColor: '#fff'},
     }}
   >
     <Stack.Screen name="Home" component={HomeScreen} />
@@ -25,7 +26,7 @@ const HomeStack = () => (
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator screenOptions={{headerStyle: {backgroundColor: '#fff'}}}>
         <Tab.Screen
           name="HomeStack"
           component={HomeStack}
@@ -39,6 +40,7 @@ export default function App() {
         <Tab.Screen
           name="Favorites"
           component={FavoriteScreen}
+          screenOptions={{headerStyle: {backgroundColor: '#fff'}}}
           options={{
             headerShown: false,
             tabBarLabel: 'Favorites',

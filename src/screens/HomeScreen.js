@@ -13,6 +13,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Icon} from 'react-native-elements'
 import Swiper from 'react-native-swiper'
+import favoritesHandler from '../helpers/favoritesHandler'
 
 const orchids = [
   {
@@ -154,7 +155,7 @@ const orchids = [
 const HomeScreen = () => {
   const navigation = useNavigation()
   const isFocused = useIsFocused()
-  const [favoritesList, setfavoritesList] = useState([])
+  const {addToFavoritesList, favoritesList, setfavoritesList} = favoritesHandler(isFocused)
 
   useEffect(() => {
     const loadFavoritesList = async () => {
@@ -169,28 +170,6 @@ const HomeScreen = () => {
 
     isFocused && loadFavoritesList()
   }, [isFocused])
-
-  const addToFavorites = async (orchid) => {
-    if (!favoritesList.find((item) => item.id === orchid.id)) {
-      const updatedFavorites = [...favoritesList, orchid]
-      setfavoritesList(updatedFavorites)
-      try {
-        const favoritesString = JSON.stringify(updatedFavorites)
-        await AsyncStorage.setItem('favorites', favoritesString)
-      } catch (error) {
-        console.log('Error saving favorites:', error)
-      }
-    } else {
-      const updatedFavorites = favoritesList.filter((item) => item.id !== orchid.id)
-      setfavoritesList(updatedFavorites)
-      try {
-        const favoritesString = JSON.stringify(updatedFavorites)
-        await AsyncStorage.setItem('favorites', favoritesString)
-      } catch (error) {
-        console.log('Error saving favorites:', error)
-      }
-    }
-  }
 
   const goToDetailScreen = (orchid) => {
     navigation.navigate('Detail', {orchid})
@@ -210,7 +189,7 @@ const HomeScreen = () => {
           <Text className="text-[18px] font-bold text-[#878787]">${item.price}</Text>
         </View>
         <TouchableOpacity
-          onPress={() => addToFavorites(item)}
+          onPress={() => addToFavoritesList(item)}
           className={`p-2 w-10 h-10 rounded-lg mt-2 ${
             favoritesList.find((favorite) => favorite.id === item.id)
               ? 'bg-red-500'
@@ -261,14 +240,14 @@ const HomeScreen = () => {
         </Swiper>
       </View>
 
-      <ScrollView className="flex-1 w-full mt-4 ml-1">
+      <View className="flex-1 w-full mt-4 ml-1">
         <FlatList
           data={orchids}
           renderItem={renderItem}
           numColumns={2}
           keyExtractor={(item) => item.id.toString()}
         />
-      </ScrollView>
+      </View>
     </View>
   )
 }
