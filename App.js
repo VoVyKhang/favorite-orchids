@@ -1,5 +1,5 @@
 import {StatusBar} from 'expo-status-bar'
-import {StyleSheet, Text, View} from 'react-native'
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
@@ -12,7 +12,11 @@ const Tab = createBottomTabNavigator()
 const Stack = createNativeStackNavigator()
 
 const HomeStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Detail" component={DetailScreen} />
   </Stack.Navigator>
@@ -36,7 +40,7 @@ export default function App() {
           name="Favorites"
           component={FavoriteScreen}
           options={{
-            // headerShown: false,
+            headerShown: false,
             tabBarLabel: 'Favorites',
             tabBarIcon: ({color}) => <Icon name="heart" type="font-awesome" color={color} />,
           }}
