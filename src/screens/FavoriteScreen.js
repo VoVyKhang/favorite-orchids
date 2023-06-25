@@ -1,11 +1,13 @@
 import {View, Text, Pressable, FlatList, TouchableOpacity, Image} from 'react-native'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {useIsFocused, useNavigation} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import favoritesHandler from '../helpers/favoritesHandler'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {Icon} from 'react-native-elements'
 import Loading from '../components/Loading'
+import {NativeBaseProvider} from 'native-base'
+import {AlertDialog, Button} from 'native-base'
 
 const FavoriteScreen = () => {
   const isFocused = useIsFocused()
@@ -13,6 +15,11 @@ const FavoriteScreen = () => {
   const {favoritesList, loading, removeFavoriteItem, removeAllFavoritesList, setfavoritesList} =
     favoritesHandler(isFocused)
   const {top} = useSafeAreaInsets()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const goToDetailScreen = (orchid) => {
+    navigation.navigate('Detail', {orchid})
+  }
 
   const renderItem = ({item}) => (
     <TouchableOpacity
@@ -50,11 +57,66 @@ const FavoriteScreen = () => {
     </TouchableOpacity>
   )
 
+  const ButtonAlert = ({text, title}) => {
+    const onClose = () => {
+      setIsOpen(false)
+    }
+
+    const handleRemoveAllFavorites = () => {
+      removeAllFavoritesList()
+      setIsOpen(false)
+    }
+
+    const cancelRef = useRef(null)
+
+    return (
+      <View className="w-full rounded-lg items-end h-20">
+        <Button
+          shadow={2}
+          className="w-24 h-10 mr-6 mt-4"
+          colorScheme="danger"
+          onPress={() => setIsOpen(!isOpen)}
+        >
+          {text ? text : 'Remove all'}
+        </Button>
+        <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
+          <AlertDialog.Content>
+            <AlertDialog.CloseButton />
+            <AlertDialog.Header>Remove</AlertDialog.Header>
+            <AlertDialog.Body>
+              {title ? title : 'Are you sure to remove all of favorites list?'}
+            </AlertDialog.Body>
+            <AlertDialog.Footer>
+              <Button.Group space={2}>
+                <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
+                  Cancel
+                </Button>
+                <Button colorScheme="danger" onPress={handleRemoveAllFavorites}>
+                  Yes
+                </Button>
+              </Button.Group>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog>
+      </View>
+    )
+  }
+
   return (
     <View style={{marginTop: top}} className="flex-1 bg-white">
       {/* Header */}
 
       <Text className="text-2xl mt-2 font-medium text-center tracking-widest">FavoriteScreen</Text>
+
+      {favoritesList.length > 0 ? (
+        <View className="mb-10">
+          <NativeBaseProvider>
+            <ButtonAlert />
+          </NativeBaseProvider>
+        </View>
+      ) : (
+        ''
+      )}
 
       {/* Favorites List */}
       {loading ? (
