@@ -14,153 +14,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import {Icon} from 'react-native-elements'
 import Swiper from 'react-native-swiper'
 import favoritesHandler from '../helpers/favoritesHandler'
-
-const orchids = [
-  {
-    id: 1,
-    name: 'Aloevera',
-    category: 'Indoor',
-    image: require('../../assets/product1.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ',
-  },
-  {
-    id: 2,
-    name: 'Marigold ',
-    category: 'Indoor',
-    image: require('../../assets/product2.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 3,
-    name: 'Jasmine',
-    category: 'Indoor',
-    image: require('../../assets/product3.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 5,
-    name: 'Lavender',
-    category: 'Indoor',
-    image: require('../../assets/product5.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 6,
-    name: 'Carnation',
-    category: 'Indoor',
-    image: require('../../assets/product6.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 7,
-    name: 'Hydrangea',
-    category: 'Indoor',
-    image: require('../../assets/product7.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 8,
-    name: 'Gerbera ',
-    category: 'Indoor',
-    image: require('../../assets/product8.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 9,
-    name: 'Magnolia',
-    category: 'Indoor',
-    image: require('../../assets/product9.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 10,
-    name: 'Violet',
-    category: 'Indoor',
-    image: require('../../assets/product10.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 11,
-    name: 'Daffodil',
-    category: 'Indoor',
-    image: require('../../assets/product11.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-  {
-    id: 12,
-    name: 'Pansy',
-    category: 'Indoor',
-    image: require('../../assets/product12.png'),
-    ratings: 4.9,
-    price: '40.50',
-    sunlight: '27-35',
-    humidity: 65,
-    about:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  },
-
-  // Add more orchids as needed
-]
+import {orchids, categoryList} from '../../assets/data/orchids'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
   const isFocused = useIsFocused()
   const {addToFavoritesList, favoritesList, setfavoritesList} = favoritesHandler(isFocused)
+  const [category, setCategory] = useState('All')
+  const [categoryIndex, setCategoryIndex] = useState(0)
+  const [orchidList, setOrchidList] = useState(orchids)
 
   useEffect(() => {
     const loadFavoritesList = async () => {
       try {
-        const list = await AsyncStorage.getItem('favoritesList')
+        const list = await AsyncStorage.getItem('favorites')
 
         list && setfavoritesList(JSON.parse(list))
       } catch (error) {
@@ -170,6 +37,15 @@ const HomeScreen = () => {
 
     isFocused && loadFavoritesList()
   }, [isFocused])
+
+  useEffect(() => {
+    if (category === 'All') {
+      setOrchidList(orchids)
+    } else {
+      const newOrchidList = orchids.filter((item) => item.category === category)
+      setOrchidList(newOrchidList)
+    }
+  }, [category])
 
   const goToDetailScreen = (orchid) => {
     navigation.navigate('Detail', {orchid})
@@ -224,7 +100,6 @@ const HomeScreen = () => {
       </View>
 
       {/* Banner */}
-
       <View className="z-50 w-[364] h-[160] mt-6 ml-4 mr-4 rounded-xl">
         <Swiper autoplay loop>
           <Image
@@ -240,9 +115,38 @@ const HomeScreen = () => {
         </Swiper>
       </View>
 
+      {/* Category */}
+      <View className="flex-row w-full mx-6 mt-6 space-x-1">
+        {categoryList.map((category, index) => (
+          <TouchableOpacity
+            key={index}
+            activeOpacity={0.7}
+            onPress={() => {
+              setCategoryIndex(index)
+              setCategory(category.name)
+            }}
+            className="mr-2 py-1.5 px-4 rounded-md"
+            style={{
+              backgroundColor: categoryIndex === index ? '#00885c' : '#fff',
+              borderColor: categoryIndex === index ? '#fff' : '#ccc',
+              borderWidth: 1.5,
+            }}
+          >
+            <Text
+              className="text-[15px] font-semibold"
+              style={{
+                color: categoryIndex === index ? '#fff' : '#ccc',
+              }}
+            >
+              {category.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
       <View className="flex-1 w-full mt-4 ml-1">
         <FlatList
-          data={orchids}
+          data={orchidList}
           renderItem={renderItem}
           numColumns={2}
           keyExtractor={(item) => item.id.toString()}

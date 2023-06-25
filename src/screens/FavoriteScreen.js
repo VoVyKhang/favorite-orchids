@@ -1,4 +1,4 @@
-import {View, Text, Pressable, FlatList, TouchableOpacity, Image} from 'react-native'
+import {View, Text, Pressable, FlatList, TouchableOpacity, Image, Alert} from 'react-native'
 import React, {useEffect, useState, useRef} from 'react'
 import {useIsFocused, useNavigation} from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -29,21 +29,31 @@ const FavoriteScreen = () => {
          bg-[#f7f5f5]"
     >
       <Image source={item.image} className="w-28 h-24 -mt-5 rounded-full" />
-      <View className="flex-row mt-2">
-        <View className="mr-14 ml-2 mb-2">
+      <View className="flex-row mt-2 justify-between">
+        <View className="mr-20 ml-2 mb-2">
           <Text className="text-[18px] text-black font-medium tracking-widest">{item.name}</Text>
           <Text className="text-[16px] text-[#7b7979] italic font-medium tracking-widest mb-1">
             {item.category}
           </Text>
           <Text className="text-[18px] font-bold text-[#3a3939]">${item.price}</Text>
         </View>
+
         <TouchableOpacity
-          onPress={() => removeFavoriteItem(item)}
-          className={`p-2 w-10 h-10 rounded-lg mt-4 ml-6 ${
-            favoritesList.find((favorite) => favorite.id === item.id)
-              ? 'bg-red-500'
-              : 'bg-[#05b379]'
-          }`}
+          onPress={() =>
+            Alert.alert(
+              `Unlike ${item.name} ?`,
+              `Are you sure to unlike this plant?`,
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => removeFavoriteItem(item)},
+              ],
+              {cancelable: false}
+            )
+          }
+          className={'p-2 w-10 h-10 rounded-lg mt-4 bg-red-500'}
         >
           <Icon
             name={favoritesList.find((favorite) => favorite.id === item.id) ? 'heart' : 'heart-o'}
@@ -57,7 +67,7 @@ const FavoriteScreen = () => {
     </TouchableOpacity>
   )
 
-  const ButtonAlert = ({text, title}) => {
+  const ButtonAlert = () => {
     const onClose = () => {
       setIsOpen(false)
     }
@@ -77,15 +87,13 @@ const FavoriteScreen = () => {
           colorScheme="danger"
           onPress={() => setIsOpen(!isOpen)}
         >
-          {text ? text : 'Remove all'}
+          Remove all
         </Button>
         <AlertDialog leastDestructiveRef={cancelRef} isOpen={isOpen} onClose={onClose}>
           <AlertDialog.Content>
             <AlertDialog.CloseButton />
-            <AlertDialog.Header>Remove</AlertDialog.Header>
-            <AlertDialog.Body>
-              {title ? title : 'Are you sure to remove all of favorites list?'}
-            </AlertDialog.Body>
+            <AlertDialog.Header>Remove all</AlertDialog.Header>
+            <AlertDialog.Body>Are you sure to remove all of favorites list?</AlertDialog.Body>
             <AlertDialog.Footer>
               <Button.Group space={2}>
                 <Button variant="unstyled" colorScheme="coolGray" onPress={onClose} ref={cancelRef}>
