@@ -1,18 +1,18 @@
-import {View, Text, Pressable, TouchableOpacity} from 'react-native'
-import React, {useEffect, useState} from 'react'
-import {Icon} from 'react-native-elements'
+import { View, Text, Pressable, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Icon } from 'react-native-elements'
 // import Icon from 'react-native-vector-icons/FontAwesome'
 
-import {useSafeAreaInsets} from 'react-native-safe-area-context'
-import {Image} from 'react-native'
-import {useNavigation} from '@react-navigation/native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Image } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {ScrollView} from 'react-native'
+import { ScrollView } from 'react-native'
 
-const DetailScreen = ({route}) => {
-  const {top} = useSafeAreaInsets()
+const DetailScreen = ({ route }) => {
+  const { top } = useSafeAreaInsets()
   const navigation = useNavigation()
-  const {orchid} = route.params
+  const { orchid, goBackFavorite, goBackHome } = route.params
   const [isFavorite, setIsFavorite] = useState(false)
 
   const checkFavoriteItemIsExist = async () => {
@@ -42,7 +42,9 @@ const DetailScreen = ({route}) => {
       }
 
       if (isFavorite) {
-        newFavoritesList = newFavoritesList.filter((item) => item.id !== orchid.id)
+        newFavoritesList = newFavoritesList.filter(
+          (item) => item.id !== orchid.id
+        )
       } else {
         newFavoritesList.push(orchid)
       }
@@ -56,11 +58,16 @@ const DetailScreen = ({route}) => {
   }
 
   const goBackHandler = () => {
-    navigation.goBack()
+    if (goBackFavorite) {
+      goBackFavorite()
+    }
+    if (goBackHome) {
+      goBackHome()
+    }
   }
 
   return (
-    <View style={{marginTop: top}} className="flex-1 z-50">
+    <View style={{ marginTop: top }} className="flex-1 z-50">
       <View className="flex-row justify-between mx-6">
         <TouchableOpacity onPress={goBackHandler}>
           <Icon name="arrow-back" size={30} />
@@ -74,12 +81,18 @@ const DetailScreen = ({route}) => {
         </TouchableOpacity>
       </View>
 
-      <View className="items-center mt-4 h-56">
-        <Image resizeMode="contain" source={orchid.image} className="w-64 -mt-28" />
+      <View className="items-center mt-28 h-28">
+        <Image
+          resizeMode="contain"
+          source={orchid.image}
+          className="w-64 h-72 -mt-28"
+        />
       </View>
 
       <View className="mt-24 px-6">
-        <Text className="text-2xl font-medium tracking-widest">{orchid.name}</Text>
+        <Text className="text-2xl font-medium tracking-widest">
+          {orchid.name}
+        </Text>
         <View className="flex-row items-center space-x-2 mt-2">
           <Icon name="star" color="#d9c430" size={20} />
           <Text className="text-base font-medium text-yellow-600">4.9</Text>

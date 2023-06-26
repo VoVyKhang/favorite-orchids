@@ -8,18 +8,19 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native'
-import React, {useEffect, useState} from 'react'
-import {useIsFocused, useNavigation} from '@react-navigation/native'
+import React, { useEffect, useState } from 'react'
+import { useIsFocused, useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import {Icon} from 'react-native-elements'
+import { Icon } from 'react-native-elements'
 import Swiper from 'react-native-swiper'
 import favoritesHandler from '../helpers/favoritesHandler'
-import {orchids, categoryList} from '../../assets/data/orchids'
+import { orchids, categoryList } from '../../assets/data/orchids'
 
 const HomeScreen = () => {
   const navigation = useNavigation()
   const isFocused = useIsFocused()
-  const {addToFavoritesList, favoritesList, setfavoritesList} = favoritesHandler(isFocused)
+  const { addToFavoritesList, favoritesList, setfavoritesList } =
+    favoritesHandler(isFocused)
   const [category, setCategory] = useState('All')
   const [categoryIndex, setCategoryIndex] = useState(0)
   const [orchidList, setOrchidList] = useState(orchids)
@@ -47,11 +48,15 @@ const HomeScreen = () => {
     }
   }, [category])
 
-  const goToDetailScreen = (orchid) => {
-    navigation.navigate('Detail', {orchid})
+  const goBackHome = () => {
+    navigation.navigate('Home')
   }
 
-  const renderItem = ({item}) => (
+  const goToDetailScreen = (orchid) => {
+    navigation.navigate('Detail', { orchid, goBackHome })
+  }
+
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => goToDetailScreen(item)}
       className="mb-4 mt-2 
@@ -62,7 +67,9 @@ const HomeScreen = () => {
       <View className="flex-row mt-4">
         <View className="mr-14 ml-2 mb-2">
           <Text className="text-[16px] text-[#797878] mb-1">{item.name}</Text>
-          <Text className="text-[18px] font-bold text-[#878787]">${item.price}</Text>
+          <Text className="text-[18px] font-bold text-[#878787]">
+            ${item.price}
+          </Text>
         </View>
         <TouchableOpacity
           onPress={() => addToFavoritesList(item)}
@@ -73,7 +80,11 @@ const HomeScreen = () => {
           }`}
         >
           <Icon
-            name={favoritesList.find((favorite) => favorite.id === item.id) ? 'heart' : 'heart-o'}
+            name={
+              favoritesList.find((favorite) => favorite.id === item.id)
+                ? 'heart'
+                : 'heart-o'
+            }
             size={20}
             color="white"
             type="font-awesome"
@@ -88,15 +99,22 @@ const HomeScreen = () => {
     <View className="flex-1">
       {/* Drawer */}
       <View className="h-16 pt-10 left-0 justify-center">
-        <TouchableOpacity className="-ml-80">
+        <TouchableOpacity
+          onPress={() => navigation.openDrawer()}
+          className="-ml-80"
+        >
           <Icon name="list" size={30} />
         </TouchableOpacity>
       </View>
 
       {/* Title */}
       <View className="pt-4 pl-6">
-        <Text className="text-[28px] font-bold tracking-widest text-[#545454]">Find your</Text>
-        <Text className="text-[28px] font-bold tracking-widest text-[#545454]">Favorite plant</Text>
+        <Text className="text-[28px] font-bold tracking-widest text-[#545454]">
+          Find your
+        </Text>
+        <Text className="text-[28px] font-bold tracking-widest text-[#545454]">
+          Favorite plant
+        </Text>
       </View>
 
       {/* Banner */}
@@ -104,12 +122,12 @@ const HomeScreen = () => {
         <Swiper autoplay loop>
           <Image
             source={require('../../assets/banner1.jpg')}
-            style={{height: 160}}
+            style={{ height: 160 }}
             className="rounded-xl w-[364]"
           />
           <Image
             source={require('../../assets/banner2.jpg')}
-            style={{height: 160}}
+            style={{ height: 160 }}
             className="rounded-xl w-[364]"
           />
         </Swiper>
